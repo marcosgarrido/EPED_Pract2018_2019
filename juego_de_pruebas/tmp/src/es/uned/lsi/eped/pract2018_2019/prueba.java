@@ -4,12 +4,10 @@ public class prueba {
 	
 	public static void main (String[] args) {
 		
-		Value v1 = new ValueSeq("48");
-		Value v2 = new ValueSeq("75");
-		//v1.addValue(v2);
-		System.out.println(v1.greater(v2));
+		Value v1 = new ValueSeq("16");
+		Value v2 = new ValueSeq("16");
+		v1.multValue(v2);
 		System.out.println(v1);
-		System.out.println(v2);
 	}
 
 }

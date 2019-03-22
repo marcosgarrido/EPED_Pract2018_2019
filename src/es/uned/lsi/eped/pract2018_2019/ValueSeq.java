@@ -72,9 +72,15 @@ public class ValueSeq extends Value {
 		
 		return this.toString().equals("0");
 	}
-	
+
+	/**
+	 * Método que recorre una secuencia de dígitos (pila) que representa un valor numérico, y almacena
+	 * sus dígitos como cadenas en un buffer de cadenas. Sobre este método se apoya el método toString.
+	 * @param s La pila que almacena los dígitos que componen el valor numérico.
+	 * @return Un buffer de cadenas.
+	 */
 	private StringBuffer toStringAux (StackIF<Integer> s) {
-		
+
 		if (s.isEmpty()) return new StringBuffer();
 		int first = s.getTop();
 		s.pop();
@@ -83,25 +89,17 @@ public class ValueSeq extends Value {
 		s.push(first);
 		return buff;
 	}
-	
-	private int comparateValue (StackIF<Integer> s1, StackIF<Integer> s2) {
-		
-		int n = 0;
-		if (s1.isEmpty()) return n;
-		int s1top = s1.getTop();
-		int s2top = s2.getTop();
-		s1.pop();
-		s2.pop();
-		n = comparateValue(s1,s2);
-		if (n == 0) {
-			if (s1top > s2top) n = 1;
-			if (s1top < s2top) n = -1;
-		}
-		s1.push(s1top);
-		s2.push((s2top));
-		return n;
-	}
-		
+
+	/**
+	 * Método recursivo que sirve para sumar o restar los valores numéricos almacenados en dos secuencias
+	 * de dígitos (pilas). Sobre este método se apoyan los métodos addValue, subValue, subFromValue y
+	 * multValueAux.
+	 * @param s1 El primer valor a operar en forma de pila de dígitos.
+	 * @param s2 El segundo valor a operar en forma de pila de dígitos.
+	 * @param add Booleano que indica si queremos sumar (true) o queremos restar (false).
+	 * @param ac Acumulador de la operación
+	 * @return El valor resultante de la operación en forma de pila de dígitos.
+	 */
 	private StackIF<Integer> addSubValue (StackIF<Integer> s1, StackIF<Integer> s2, boolean add, int ac) {
 
 		StackIF<Integer> result = new Stack<>();
@@ -141,7 +139,16 @@ public class ValueSeq extends Value {
 		
 		return result;		
 	}
-	
+
+	/**
+	 * Método recursivo que multiplica dos valores numéricos almacenados en dos secuencias de dígitos (pilas).
+	 * @param s1 El valor numérico del multiplicando en forma de pila de dígitos.
+	 * @param s2 El valor numérico del multiplicador en forma de pila de dígitos.
+	 * @param n Entero que cuenta los ceros que hay que añadir a la derecha del resultado parcial de la
+	 *          multiplicación en función de la posición del dígito del multiplicador (unidades, decenas,
+	 *          centenas, ...) con el que se está multiplicando al multiplicando.
+	 * @return El valor resultante de la multiplicación en forma de pila de dígitos.
+	 */
 	private StackIF<Integer> multValueAux(StackIF<Integer> s1, StackIF<Integer> s2, int n) {
 
 		if (s2.isEmpty()) return new Stack<>();
@@ -155,7 +162,15 @@ public class ValueSeq extends Value {
 		
 		return result;
 	}
-	
+
+	/**
+	 * Método recursivo que multiplica un valor numérico almacenado en una secuencia de dígitos (pila),
+	 * por un dígito. Sobre este método se apoya el método multValueAux.
+	 * @param s1 El valor que tiene que ser multiplicado por un dígito en forma de pila de dígitos.
+	 * @param o2 El dígito que tiene que multiplicar al valor.
+	 * @param ac Entero que almacena el acumulador de las operaciones.
+	 * @return El valor resultante de la multiplicación en forma de pila de dígitos.
+	 */
 	private StackIF<Integer> multValueByDigit (StackIF<Integer> s1, int o2, int ac) {
 
 		StackIF<Integer> result = new Stack<>();
@@ -173,6 +188,33 @@ public class ValueSeq extends Value {
 		if (n != 0 || !result.isEmpty()) result.push(n);
 		
 		return result;
+	}
+
+	/**
+	 * Método que compara recursivamente los valores representados por dos secuencias de dígitos (pilas).
+	 * Sobre este método se apoya el método greater.
+	 * @param s1 El primer valor a comparar en forma de pila de dígitos.
+	 * @param s2 El segundo valor a comparar en forma de pila de dígitos.
+	 * @return -1 si el valor numérico almacenado en s1 es menor que el valor numérico almacenado en s2.
+	 * 			0 si el valor numérico almacenado en s1 es igual que el valor numérico almacenado en s2.
+	 * 			1 si el valor numérico almacenado en s1 es mayor que el valor numérico almacenado en s2.
+	 */
+	private int comparateValue (StackIF<Integer> s1, StackIF<Integer> s2) {
+
+		int n = 0;
+		if (s1.isEmpty()) return n;
+		int s1top = s1.getTop();
+		int s2top = s2.getTop();
+		s1.pop();
+		s2.pop();
+		n = comparateValue(s1,s2);
+		if (n == 0) {
+			if (s1top > s2top) n = 1;
+			if (s1top < s2top) n = -1;
+		}
+		s1.push(s1top);
+		s2.push((s2top));
+		return n;
 	}
 
 	/* Método alternativo a multValue propuesto por el ED, el orden de complejidad

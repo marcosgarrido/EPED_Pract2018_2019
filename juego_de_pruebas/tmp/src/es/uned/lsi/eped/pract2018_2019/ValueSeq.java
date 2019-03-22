@@ -4,12 +4,12 @@ import es.uned.lsi.eped.DataStructures.Stack;
 import es.uned.lsi.eped.DataStructures.StackIF;
 
 public class ValueSeq extends Value {
-	
+
 	private StackIF<Integer> value;
 	
 	/* Constructor: recibe un String con el valor numérico */
 	public ValueSeq(String s) {
-		
+
 		value = new Stack<>();
 		for (int i = 0 ; i < s.length() ; i++) {
 			int n = Character.getNumericValue(s.charAt(i));
@@ -21,7 +21,7 @@ public class ValueSeq extends Value {
 	/* Método que transforma el valor numérico en un String */
 	public String toString() {
 		
-		return toStringAux(value).toString();
+		return toStringAux().toString();
 	}
 
 	/* Método que modifica el valor numérico llamante, sumándole el valor numérico parámetro */
@@ -72,15 +72,16 @@ public class ValueSeq extends Value {
 		
 		return this.toString().equals("0");
 	}
-	
-	private StringBuffer toStringAux (StackIF<Integer> s) {
+
+	/* Método auxiliar en el que se apoya el método toString. Recorre */
+	private StringBuffer toStringAux() {
 		
-		if (s.isEmpty()) return new StringBuffer();
-		int first = s.getTop();
-		s.pop();
-		StringBuffer buff = toStringAux(s);
+		if (this.value.isEmpty()) return new StringBuffer();
+		int first = this.value.getTop();
+		this.value.pop();
+		StringBuffer buff = toStringAux();
 		buff.append(first);
-		s.push(first);
+		this.value.push(first);
 		return buff;
 	}
 	
@@ -105,7 +106,7 @@ public class ValueSeq extends Value {
 	private StackIF<Integer> addSubValue (StackIF<Integer> s1, StackIF<Integer> s2, boolean add, int ac) {
 
 		StackIF<Integer> result = new Stack<>();
-		
+
 		if (s1.isEmpty() && s2.isEmpty()) {
 			if (ac > 0 && add) result.push(ac);
 			return result;
@@ -142,20 +143,21 @@ public class ValueSeq extends Value {
 		return result;		
 	}
 	
-	private StackIF<Integer> multValueAux(StackIF<Integer> s1, StackIF<Integer> s2, int i) {
+	private StackIF<Integer> multValueAux(StackIF<Integer> s1, StackIF<Integer> s2, int n) {
 
 		if (s2.isEmpty()) return new Stack<>();
 		int o2 = s2.getTop();
 		s2.pop();
 		StackIF<Integer> pResult = multValueByDigit(s1, o2, 0);
-		for (int a  = 0 ; a < i ; a++ ) pResult.push(0);
-		StackIF<Integer> result = multValueAux(s1, s2, i + 1);
+		for (int i  = 0 ; i < n ; i++ ) pResult.push(0);
+		StackIF<Integer> result = multValueAux(s1, s2,  n + 1);
 		result = addSubValue(result,pResult,true,0);
 		s2.push(o2);		
 		
 		return result;
 	}
-	
+
+	// log10 N
 	private StackIF<Integer> multValueByDigit (StackIF<Integer> s1, int o2, int ac) {
 
 		StackIF<Integer> result = new Stack<>();

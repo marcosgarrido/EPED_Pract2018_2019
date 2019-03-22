@@ -2,25 +2,25 @@ package es.uned.lsi.eped.pract2018_2019;
 
 import es.uned.lsi.eped.DataStructures.BTreeIF;
 import es.uned.lsi.eped.DataStructures.Stack;
+import es.uned.lsi.eped.DataStructures.StackIF;
 
 public class StackMachine {
 	
-	private Stack<Operand> stack;
+	private StackIF<Operand> stack;
 	
 	public StackMachine() {
 		
-		stack = new Stack<Operand>();
+		stack = new Stack<>();
 	}
 	
 	public Operand execute(SynTree syn) {
-		
-		syn.toString();
+
 		processSynTreeNodes(syn.getSynTree());
-		return (stack.getTop());
+		return stack.getTop();
 	}
 	
 	private void processSynTreeNodes(BTreeIF<Node> syntree) {
-		
+
 		if (!syntree.isEmpty()) {
 			BTreeIF<Node> leftChild = syntree.getLeftChild();
 			BTreeIF<Node> rightChild = syntree.getRightChild();
@@ -35,16 +35,16 @@ public class StackMachine {
 				Operand operand = stack.getTop();
 				stack.pop();
 				switch (operator.getOperatorType()) {
-				case ADD:
-					stack.getTop().add(operand);
-					break;
-				case SUB:
-					stack.getTop().sub(operand);
-					break;
-				case MULT:
-					stack.getTop().mult(operand);
-				default:
-					break;
+					case ADD:
+						stack.getTop().add(operand);
+						break;
+					case SUB:
+						stack.getTop().sub(operand);
+						break;
+					case MULT:
+						stack.getTop().mult(operand);
+					default:
+						break;
 				}
 			}
 		}
