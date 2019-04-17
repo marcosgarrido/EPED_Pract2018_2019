@@ -217,7 +217,8 @@ public class ValueSeq extends Value {
 		return n;
 	}
 
-	/* Método alternativo a multValue propuesto por el ED, el orden de complejidad
+	/**
+	 *  Método alternativo a multValue propuesto por el ED, el orden de complejidad
 	 * es el mismo que el método que se ha usado pero el tamaño del problema en este
 	 * caso es muchísimo mayor. En el método anterior el tamaño del problema es el
 	 * número de dígitos que tiene el número, y en este método el tamaño del problema
@@ -231,7 +232,6 @@ public class ValueSeq extends Value {
 		while (!cont.isZero()) {
 			result.addValue(this);
 			cont.subValue(one);
-			System.out.println(cont);
 		}
 	}	*/
 }
